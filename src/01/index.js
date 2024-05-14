@@ -12,8 +12,9 @@ class ThreeApp {
     aspect: window.innerWidth / window.innerHeight,
     near: 0.1,
     far: 10.0,
-    position: new THREE.Vector3(0.0, 2.0, 5.0),
+    position: new THREE.Vector3(3.0, 2.0, 6.0),
     lookAt: new THREE.Vector3(0.0, 0.0, 0.0),
+    radius: 6,
   };
 
   /**
@@ -59,15 +60,15 @@ class ThreeApp {
   renderer; // レンダラ
   scene; // シーン
   camera; // カメラ
+  cameraAngle = 0; // カメラの角度
   directionalLight; // 平行光源（ディレクショナルライト）
+  lightAngle = 0; // 平行光源の角度
   ambientLight; // 環境光（アンビエントライト）
   geometry; // ジオメトリ
   material; // マテリアル
   box; // ボックスメッシュ
   controls; //オービットコントロール
   axesHelper; // 軸ヘルパー
-
-  isDown = false; // キーの押下状態用フラグ
 
   /**
    * @constructor
@@ -130,17 +131,6 @@ class ThreeApp {
     // オービットコントロール
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
 
-    window.addEventListener("keydown", (e) => {
-      switch (e.key) {
-        case " ":
-          this.isDown = true;
-          break;
-        default:
-      }
-    });
-    window.addEventListener("keyup", () => {
-      this.isDown = false;
-    });
     window.addEventListener("resize", () => {
       this.renderer.setSize(window.innerWidth, window.innerHeight);
       this.camera.aspect = window.innerWidth / window.innerHeight;
@@ -156,9 +146,24 @@ class ThreeApp {
     // 書かなくても大丈夫
     this.controls.update();
 
-    if (this.isDown) {
-      this.box.rotation.y += 0.05;
-    }
+    // メッシュを毎フレームごとに0.01ずつy軸回転
+    this.box.rotation.y += 0.001;
+    this.box.rotation.x += 0.001;
+    this.box.rotation.z += 0.001;
+    // this.box.rotation.z += 0.005;
+
+    this.cameraAngle -= 0.005;
+    this.camera.position.x =
+      ThreeApp.CAMERA_PARAM.radius * Math.cos(this.cameraAngle);
+    this.camera.position.z =
+      ThreeApp.CAMERA_PARAM.radius * Math.sin(this.cameraAngle);
+
+    this.lightAngle -= 0.005;
+    this.directionalLight.position.x =
+      ThreeApp.CAMERA_PARAM.radius * Math.cos(this.lightAngle);
+    this.directionalLight.position.z =
+      ThreeApp.CAMERA_PARAM.radius * Math.sin(this.lightAngle);
+
     this.renderer.render(this.scene, this.camera);
   };
 }
