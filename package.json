@@ -7,7 +7,7 @@
   "type": "module",
   "packageManager": "npm@10.2.4",
   "engines": {
-    "node": "20.11.1",
+    "node": "20.x",
     "npm": "10.2.4",
     "yarn": "Please use npm, instead of yarn."
   },
