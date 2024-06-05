@@ -21,7 +21,7 @@ class ThreeApp {
     aspect: window.innerWidth / window.innerHeight,
     near: 0.1,
     far: 50.0,
-    position: new THREE.Vector3(20.0, 15.0, 30.0),
+    position: new THREE.Vector3(0.0, 0.0, 20.0),
     lookAt: new THREE.Vector3(0.0, 15.0, 0.0),
   };
 
@@ -138,11 +138,11 @@ class ThreeApp {
     // ジオメトリ（羽）
     const blade = new THREE.Shape();
     blade.moveTo(0, 0);
-    blade.lineTo(0.5, -2);
-    blade.lineTo(0.1, -6.0);
-    blade.lineTo(-0.1, -6.0);
-    blade.lineTo(-0.5, -2);
-    blade.lineTo(0, 0);
+    blade.bezierCurveTo(1, -1, 3, -9, 0, -11);
+    blade.bezierCurveTo(-1, -12, -4, -12, -6, -11);
+    blade.bezierCurveTo(-8, -10, -8, -10, -7, -8);
+    blade.bezierCurveTo(-6, -6, -3, -2, -2, -1);
+    blade.bezierCurveTo(-1, 0, -1, 0, 0, 0);
 
     const extrudeSettings = {
       steps: 2,
@@ -168,9 +168,9 @@ class ThreeApp {
     this.center.position.z = 2.0;
 
     this.blade1 = new THREE.Mesh(bladeGeometry, this.material);
-    this.blade1.position.y = 18; // 首の位置を調整
-    this.blade1.rotation.y = Math.PI / 12;
-    this.blade1.position.z = 2.5; // 首の位置を調整
+    // this.blade1.position.y = 18; // 首の位置を調整
+    // this.blade1.rotation.y = Math.PI / 12;
+    // this.blade1.position.z = 2.5; // 首の位置を調整
 
     this.blade2 = new THREE.Mesh(bladeGeometry, this.material);
     this.blade2.position.y = 18; // 首の位置を調整
@@ -184,14 +184,14 @@ class ThreeApp {
     this.blade3.position.z = 2.5; // 首の位置を調整
     this.blade3.rotation.z = 120 * (Math.PI / 180);
 
-    this.scene.add(this.pillarUnder);
-    this.scene.add(this.pillarTop);
-    this.scene.add(this.base);
-    this.scene.add(this.neck);
-    this.scene.add(this.center);
+    // this.scene.add(this.pillarUnder);
+    // this.scene.add(this.pillarTop);
+    // this.scene.add(this.base);
+    // this.scene.add(this.neck);
+    // this.scene.add(this.center);
     this.scene.add(this.blade1);
-    this.scene.add(this.blade2);
-    this.scene.add(this.blade3);
+    // this.scene.add(this.blade2);
+    // this.scene.add(this.blade3);
 
     // ヘルパー
     this.axesHelper = new THREE.AxesHelper(ThreeApp.HELPER_PARAM.axesHelper);
@@ -200,7 +200,7 @@ class ThreeApp {
     // this.createFanBlade();
 
     // オービットコントロール
-    // this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.render = this.render.bind(this);
 
     window.addEventListener("resize", () => {
